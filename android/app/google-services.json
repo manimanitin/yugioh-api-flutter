@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "748474273752",
+    "project_id": "yugioh-api-flutter",
+    "storage_bucket": "yugioh-api-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748474273752:android:e7c9297f5dfc6d11c3ecad",
+        "android_client_info": {
+          "package_name": "com.example.yugioh_api_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfgZ5rzGkfHbD3LtPdO-iVutgdQHzZSFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
