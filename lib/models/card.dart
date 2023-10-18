@@ -1,31 +1,10 @@
 import 'dart:convert';
 
-class Card {
-  List<CardType> data;
-
-  Card({
-    required this.data,
-  });
-
-  factory Card.fromRawJson(String str) => Card.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Card.fromJson(Map<String, dynamic> json) => Card(
-        data: List<CardType>.from(
-            json["data"].map((x) => CardType.monsterFromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-      };
-}
-
 class CardType {
   int id;
   String name;
   String type;
-  String frameType;
+  String? frameType;
   String desc;
   int? atk;
   int? def;
@@ -39,7 +18,7 @@ class CardType {
   List<CardSet> cardSets;
   List<CardImage> cardImages;
   List<CardPrice> cardPrices;
-  List<String> banListStatus;
+  List<CardBan> banListStatus;
 
   CardType.monster({
     required this.id,
@@ -63,7 +42,6 @@ class CardType {
     required this.id,
     required this.name,
     required this.type,
-    required this.frameType,
     required this.desc,
     required this.race,
     required this.cardImages,
@@ -94,42 +72,51 @@ class CardType {
 
   factory CardType.spellTrapFromJson(Map<String, dynamic> json) =>
       CardType.spelltraps(
-          id: json["id"],
-          name: json["name"],
-          type: json["type"],
-          frameType: json["frameType"],
-          desc: json["desc"],
-          race: json["race"],
-          cardSets: List<CardSet>.from(
-              json["card_sets"].map((x) => CardSet.fromJson(x))),
-          cardImages: List<CardImage>.from(
-              json["card_images"].map((x) => CardImage.fromJson(x))),
-          cardPrices: List<CardPrice>.from(
-              json["card_prices"].map((x) => CardPrice.fromJson(x))),
-          banListStatus: List<String>.from(
-              json["ban_list"].map((x) => CardPrice.fromJson(x))));
+        id: json["id"],
+        name: json["name"],
+        type: json["type"],
+        desc: json["desc"],
+        race: json["race"],
+        cardSets: json["card_sets"] != null
+            ? List<CardSet>.from(
+                json["card_sets"].map((x) => CardSet.fromJson(x)))
+            : List.empty(),
+        cardImages: List<CardImage>.from(
+            json["card_images"].map((x) => CardImage.fromJson(x))),
+        cardPrices: List<CardPrice>.from(
+            json["card_prices"].map((x) => CardPrice.fromJson(x))),
+        banListStatus: json["ban_list"] != null
+            ? List<CardBan>.from(
+                json["ban_list"].map((x) => CardBan.fromJson(x)))
+            : List.empty(),
+      );
 
   factory CardType.monsterFromJson(Map<String, dynamic> json) =>
       CardType.monster(
-          id: json["id"],
-          name: json["name"],
-          type: json["type"],
-          frameType: json["frameType"],
-          desc: json["desc"],
-          atk: json["atk"],
-          def: json["def"],
-          level: json["level"],
-          race: json["race"],
-          attribute: json["attribute"],
-          archetype: json["archetype"],
-          cardSets: List<CardSet>.from(
-              json["card_sets"].map((x) => CardSet.fromJson(x))),
-          cardImages: List<CardImage>.from(
-              json["card_images"].map((x) => CardImage.fromJson(x))),
-          cardPrices: List<CardPrice>.from(
-              json["card_prices"].map((x) => CardPrice.fromJson(x))),
-          banListStatus: List<String>.from(
-              json["ban_list"].map((x) => CardPrice.fromJson(x))));
+        id: json["id"],
+        name: json["name"],
+        type: json["type"],
+        frameType: json["frameType"] ?? '',
+        desc: json["desc"],
+        atk: json["atk"],
+        def: json["def"],
+        level: json["level"],
+        race: json["race"],
+        attribute: json["attribute"],
+        archetype: json["archetype"],
+        cardSets: json["card_sets"] != null
+            ? List<CardSet>.from(
+                json["card_sets"].map((x) => CardSet.fromJson(x)))
+            : List.empty(),
+        cardImages: List<CardImage>.from(
+            json["card_images"].map((x) => CardImage.fromJson(x))),
+        cardPrices: List<CardPrice>.from(
+            json["card_prices"].map((x) => CardPrice.fromJson(x))),
+        banListStatus: json["ban_list"] != null
+            ? List<CardBan>.from(
+                json["ban_list"].map((x) => CardBan.fromJson(x)))
+            : List.empty(),
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -145,8 +132,9 @@ class CardType {
         "scale": scale,
         "linkval": linkval,
         "archetype": archetype,
-        "linkmarkers":
-            List<dynamic>.from(linkmarkers!.map((x) => x.toString())),
+        "linkmarkers": linkmarkers != null
+            ? List<dynamic>.from(linkmarkers!.map((x) => x.toString()))
+            : List.empty(),
         "card_sets": List<dynamic>.from(cardSets.map((x) => x.toJson())),
         "card_images": List<dynamic>.from(cardImages.map((x) => x.toJson())),
         "card_prices": List<dynamic>.from(cardPrices.map((x) => x.toJson())),
@@ -173,10 +161,10 @@ class CardImage {
   String toRawJson() => json.encode(toJson());
 
   factory CardImage.fromJson(Map<String, dynamic> json) => CardImage(
-        id: json["id"],
+        id: json["id"] ?? 0,
         imageUrl: json["image_url"],
         imageUrlSmall: json["image_url_small"],
-        imageUrlCropped: json["image_url_cropped"],
+        imageUrlCropped: json["image_url_cropped"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -212,7 +200,7 @@ class CardPrice {
         tcgplayerPrice: json["tcgplayer_price"],
         ebayPrice: json["ebay_price"],
         amazonPrice: json["amazon_price"],
-        coolstuffincPrice: json["coolstuffinc_price"],
+        coolstuffincPrice: json["coolstuffinc_price"] ?? 'unknown',
       );
 
   Map<String, dynamic> toJson() => {
@@ -247,7 +235,7 @@ class CardSet {
         setName: json["set_name"],
         setCode: json["set_code"],
         setRarity: json["set_rarity"],
-        setRarityCode: json["set_rarity_code"],
+        setRarityCode: json["set_rarity_code"] ?? '',
         setPrice: json["set_price"],
       );
 
@@ -257,5 +245,29 @@ class CardSet {
         "set_rarity": setRarity,
         "set_rarity_code": setRarityCode,
         "set_price": setPrice,
+      };
+}
+
+class CardBan {
+  String banTcg;
+  String banOcg;
+  String banGoat;
+
+  CardBan({required this.banTcg, required this.banOcg, required this.banGoat});
+
+  factory CardBan.fromRawJson(String str) => CardBan.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory CardBan.fromJson(Map<String, dynamic> json) => CardBan(
+        banTcg: json["ban_tcg"] ?? 'unlimited',
+        banOcg: json["ban_ocg"] ?? 'unlimited',
+        banGoat: json["ban_goat"] ?? 'unlimited',
+      );
+
+  Map<String, dynamic> toJson() => {
+        "ban_tcg": banTcg,
+        "ban_ocg": banOcg,
+        "ban_goat": banGoat,
       };
 }
