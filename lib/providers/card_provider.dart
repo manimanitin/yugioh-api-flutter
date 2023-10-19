@@ -52,7 +52,8 @@ class CardProvider extends ChangeNotifier {
       try {
         final response =
             await dio.get("https://db.ygoprodeck.com/api/v7/randomcard.php");
-        if (response.data["atk"] != null && randomCardList.length < 10) {
+        print(response.data);
+        if (response.data["atk"] != null) {
           final monsterCard = CardType.monsterFromJson(response.data);
           randomCardList.add(monsterCard);
         } else {

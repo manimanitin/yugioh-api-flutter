@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yugioh_api_flutter/models/card.dart';
 import 'package:yugioh_api_flutter/providers/card_provider.dart';
+import 'package:yugioh_api_flutter/widgets/widgets.dart';
 
 class RandomCards extends StatefulWidget {
   const RandomCards({super.key});
@@ -61,17 +62,7 @@ class _RandomCardsState extends State<RandomCards> {
             itemBuilder: (_, index) {
               if (index < cardo.length) {
                 return ListTile(
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.zero,
-                    child: CachedNetworkImage(
-                      placeholder: (context, url) => Image.asset(
-                          'assets/BackCard.png'), // Your default image here,
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      imageUrl: cardo[index].cardImages.first.imageUrl,
-                      height: 250,
-                    ),
-                  ),
+                  leading: CardImageContainer(card: cardo[index]),
                   title: Text(cardo[index].name),
                   onTap: () {
                     Navigator.pushNamed(context, '/details',
@@ -80,7 +71,7 @@ class _RandomCardsState extends State<RandomCards> {
                 );
               } else {
                 return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 32),
+                  padding: EdgeInsets.symmetric(vertical: 20),
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:yugioh_api_flutter/models/card.dart';
+import 'package:yugioh_api_flutter/widgets/card_image.dart';
 
 class CardDetails extends StatelessWidget {
   const CardDetails({super.key});
@@ -66,66 +67,72 @@ class _ImageAndName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(card.toJson());
-    return Container(
-      margin: const EdgeInsets.only(top: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.zero,
-            child: CachedNetworkImage(
-              placeholder: (context, url) => Image.asset(
-                  'assets/BackCard.png'), // Your default image here,
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              imageUrl: card.cardImages.first.imageUrl,
-              height: 250,
+    return Column(
+      children: [
+        Row(
+          children: [
+            CardImageContainer(card: card),
+            const SizedBox(
+              width: 20,
             ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Expanded(
+            Expanded(
               child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FittedBox(
-                alignment: Alignment.center,
-                child: Text(
-                  card.name,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                ),
-              ),
-              FittedBox(
-                alignment: Alignment.center,
-                child: Text(
-                  card.type,
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Text(
-                card.desc,
-                style: const TextStyle(fontSize: 12),
-                textAlign: TextAlign.center,
-              ),
-              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _CardStats(value: card.atk ?? 0, icon: MdiIcons.sword),
-                  const Spacer(),
-                  _CardStats(value: card.def ?? 0, icon: MdiIcons.shield),
+                  FittedBox(
+                    alignment: Alignment.center,
+                    child: Text(
+                      card.name,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  FittedBox(
+                    alignment: Alignment.center,
+                    child: Text(
+                      card.type,
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _CardStats(value: card.atk ?? -1, icon: MdiIcons.sword),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      _CardStats(value: card.def ?? -1, icon: MdiIcons.shield),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ))
-        ],
-      ),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          card.desc,
+          style: const TextStyle(
+            fontSize: 18,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }
@@ -136,6 +143,10 @@ class _CardStats extends StatelessWidget {
   final IconData icon;
   @override
   Widget build(BuildContext context) {
+    if (value < 0) {
+      return const SizedBox.shrink();
+    }
+
     return Row(
       children: [
         Icon(
