@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:yugioh_api_flutter/screens/random_cards.dart';
+import 'package:yugioh_api_flutter/screens/screens.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,10 +21,10 @@ class BottomCardNavigation extends StatefulWidget {
 
 class _BottomCardNavigationState extends State<BottomCardNavigation> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    RandomCards(),
-    RandomCards(),
-    RandomCards(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const RandomCards(),
+    SearchScreen(),
+    const RandomCards(),
   ];
 
   void _onItemTapped(int index) {

@@ -116,6 +116,13 @@ class _ImageAndName extends StatelessWidget {
                       ),
                       _CardStats(value: card.def ?? -1, icon: MdiIcons.shield),
                     ],
+                  ),
+                  Row(
+                    children: [
+                      _CardStats(
+                          value: card.linkval ?? -1,
+                          icon: MdiIcons.cardsDiamond)
+                    ],
                   )
                 ],
               ),

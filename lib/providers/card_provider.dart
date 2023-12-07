@@ -20,6 +20,7 @@ class CardProvider extends ChangeNotifier {
       banListStatus: List.empty());
 
   List<CardType> randomCardList = [];
+  List<CardType> searchCardList = [];
 
   CardProvider() {
     getRandomCard();
@@ -71,5 +72,40 @@ class CardProvider extends ChangeNotifier {
 
   List<CardType> getRandomCardList() {
     return randomCardList;
+  }
+
+  List<CardType> getSearchList() {
+    return searchCardList;
+  }
+
+  emptySearchList() {
+    searchCardList.clear();
+    notifyListeners();
+    print("se elimino");
+  }
+
+  addSearchList(String? fname) async {
+    final dio = Dio(options);
+    emptySearchList();
+    print(searchCardList.length);
+    try {
+      final response = await dio
+          .get("https://db.ygoprodeck.com/api/v7/cardinfo.php?&fname=$fname");
+      for (var element in response.data["data"]) {
+        if (element["atk"] != null) {
+          final monsterCard = CardType.monsterFromJson(element);
+          searchCardList.add(monsterCard);
+          print(monsterCard.name);
+        } else {
+          final monsterCard = CardType.spellTrapFromJson(element);
+          searchCardList.add(monsterCard);
+          print(monsterCard.name);
+        }
+
+        notifyListeners();
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 }
