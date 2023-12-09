@@ -21,6 +21,7 @@ class CardProvider extends ChangeNotifier {
 
   List<CardType> randomCardList = [];
   List<CardType> searchCardList = [];
+  List<CardType> deckCards = [];
 
   CardProvider() {
     getRandomCard();

@@ -46,15 +46,15 @@ class _BottomCardNavigationState extends State<BottomCardNavigation> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Random card list',
+            label: 'All cards',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Random card list',
+            label: 'Search card',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Random card list',
+            label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,

@@ -59,22 +59,24 @@ class _SearchScreenState extends State<SearchScreen> {
           SizedBox(height: 16.0),
           _searchQuery.isEmpty
               ? Text('Enter a search query')
-              : Expanded(
-                  child: ListView.builder(
-                      controller: controller,
-                      itemCount: cardo.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: CardImageContainer(card: cardo[index]),
-                          title: Text(cardo[index].name),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/details',
-                                arguments: cardo[index]);
-                          },
-                        );
-                      }),
-                ),
+              : cardo.isNotEmpty
+                  ? Expanded(
+                      child: ListView.builder(
+                          controller: controller,
+                          itemCount: cardo.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: CardImageContainer(card: cardo[index]),
+                              title: Text(cardo[index].name),
+                              onTap: () {
+                                Navigator.pushNamed(context, '/details',
+                                    arguments: cardo[index]);
+                              },
+                            );
+                          }),
+                    )
+                  : const CircularProgressIndicator()
           // Add your search results widget here based on the _searchQuery
         ],
       ),
