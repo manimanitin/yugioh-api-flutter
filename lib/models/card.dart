@@ -20,6 +20,24 @@ class CardType {
   List<CardPrice> cardPrices;
   List<CardBan> banListStatus;
 
+  bool get extraDeck {
+    List<String> ExtraDeckMonsterTypes = [
+      "Fusion Monster",
+      "Link Monster",
+      "Pendulum Effect Fusion Monster",
+      "Synchro Monster",
+      "Synchro Pendulum Effect Monster",
+      "Synchro Tuner Monster",
+      "XYZ Monster",
+      "XYZ Pendulum Effect Monster",
+    ];
+    if (ExtraDeckMonsterTypes.contains(type)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   CardType.monster({
     required this.id,
     required this.name,
@@ -27,11 +45,13 @@ class CardType {
     required this.frameType,
     required this.desc,
     required this.atk,
+    required this.scale,
     required this.def,
     required this.level,
     required this.race,
     required this.attribute,
     required this.cardSets,
+    required this.linkval,
     required this.cardImages,
     required this.cardPrices,
     required this.banListStatus,
@@ -99,7 +119,9 @@ class CardType {
         frameType: json["frameType"] ?? '',
         desc: json["desc"],
         atk: json["atk"],
+        linkval: json["linkval"],
         def: json["def"],
+        scale: json["scale"],
         level: json["level"],
         race: json["race"],
         attribute: json["attribute"],

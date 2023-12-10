@@ -94,7 +94,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                 Column(
                   children: [
                     Text(
-                      'Registrar',
+                      'Register',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: AppColors.grey,
                             fontWeight: FontWeight.bold,
@@ -104,7 +104,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                       height: 6,
                     ),
                     Text(
-                      'Crea tu cuenta',
+                      'Create your account',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.grey,
                             fontWeight: FontWeight.bold,
@@ -130,24 +130,24 @@ class _RegisterFormState extends State<_RegisterForm> {
                   onChanged: (value) => loginForm.email = value,
                   validator: (value) {
                     return value!.isEmpty
-                        ? 'Por favor ingrese su correo'
+                        ? 'Please, Enter Email Address'
                         : _RegisterForm.emailRegex.hasMatch(value)
                             ? null
-                            : 'Email invalido';
+                            : 'Invalid Email Address';
                   },
                   controller: emailController,
                 ),
                 AppTextFormField(
-                  labelText: 'Contraseña',
+                  labelText: 'Password',
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,
                   onChanged: (value) => loginForm.password = value,
                   validator: (value) {
                     return value!.isEmpty
-                        ? 'Por favor ingrese su contraseña'
+                        ? 'Please, Enter Password'
                         : _RegisterForm.passwordRegex.hasMatch(value)
                             ? null
-                            : 'Contraseña invalida';
+                            : 'Invalid Password';
                   },
                   controller: passwordController,
                   obscureText: isObscure,
@@ -175,7 +175,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   ),
                 ),
                 AppTextFormField(
-                  labelText: 'Confirmar contraseña',
+                  labelText: 'Confirm Password',
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,
                   onChanged: (value) {
@@ -183,13 +183,13 @@ class _RegisterFormState extends State<_RegisterForm> {
                   },
                   validator: (value) {
                     return value!.isEmpty
-                        ? 'Por favor, reingrese su contraseña'
+                        ? 'Please, Re-Enter Password'
                         : _RegisterForm.passwordRegex.hasMatch(value)
                             ? passwordController.text ==
                                     confirmPasswordController.text
                                 ? null
-                                : 'Contraseña no identica'
-                            : 'Contraseña invalida';
+                                : 'Password not matched!'
+                            : 'Invalid Password!';
                   },
                   controller: confirmPasswordController,
                   obscureText: isConfirmPasswordObscure,
@@ -250,7 +250,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     backgroundColor: MaterialStateProperty.all(null),
                   ),
                   child: Text(
-                    loginForm.isLoading ? 'Espere' : 'Registrar',
+                    loginForm.isLoading ? 'Loading' : 'Register',
                   ),
                 ),
               ],
@@ -262,7 +262,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Tengo una cuenta',
+                  'I have an account',
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
@@ -270,7 +270,8 @@ class _RegisterFormState extends State<_RegisterForm> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/login');
+                    Navigator.pushReplacementNamed(context, '/home',
+                        arguments: 2);
                   },
                   style: Theme.of(context).textButtonTheme.style,
                   child: Text(

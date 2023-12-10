@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:yugioh_api_flutter/colors/colors.dart';
 import 'package:yugioh_api_flutter/models/card.dart';
+import 'package:yugioh_api_flutter/providers/card_provider.dart';
+import 'package:yugioh_api_flutter/services/notification_service.dart';
 import 'package:yugioh_api_flutter/widgets/card_image.dart';
 
 class CardDetails extends StatelessWidget {
@@ -11,13 +15,46 @@ class CardDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final CardType card =
         ModalRoute.of(context)?.settings.arguments as CardType;
+    final cardProvider = Provider.of<CardProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Card Details"),
+        backgroundColor: AppColors.secondaryColor,
       ),
       body: CardScrollView(
         card: card,
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          CustomButton(
+            onPressed: () {
+              String message = cardProvider.addToDeck(card);
+              NotificationsService.showSnackbar(message);
+            },
+            icono: Icons.add,
+            color: AppColors.buttonGreenColor,
+          ),
+          const SizedBox(height: 10),
+          CustomButton(
+            onPressed: () {
+              String message = cardProvider.deleteFromDeck(card);
+              NotificationsService.showSnackbar(message);
+            },
+            icono: Icons.remove,
+            color: AppColors.accentColor,
+          ),
+          const SizedBox(height: 10),
+          CustomButton(
+            icono: Icons.refresh,
+            onPressed: () {
+              String message = cardProvider.resetFromDeck(card);
+              NotificationsService.showSnackbar(message);
+            },
+            color: AppColors.lightBlue,
+          )
+        ],
       ),
     );
   }
@@ -61,12 +98,12 @@ class CardScrollView extends StatelessWidget {
 }
 
 class _ImageAndName extends StatelessWidget {
-  _ImageAndName({super.key, required this.card});
+  const _ImageAndName({required this.card});
   final CardType card;
 
   @override
   Widget build(BuildContext context) {
-    print(card.toJson());
+    print(card.extraDeck);
     return Column(
       children: [
         Row(
@@ -77,7 +114,6 @@ class _ImageAndName extends StatelessWidget {
             ),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   FittedBox(
                     alignment: Alignment.center,
@@ -108,7 +144,7 @@ class _ImageAndName extends StatelessWidget {
                     height: 10,
                   ),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _CardStats(value: card.atk ?? -1, icon: MdiIcons.sword),
                       const SizedBox(
@@ -118,10 +154,22 @@ class _ImageAndName extends StatelessWidget {
                     ],
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _CardStats(value: card.level ?? -1, icon: MdiIcons.star)
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _CardStats(value: card.linkval ?? -1, icon: MdiIcons.link)
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _CardStats(
-                          value: card.linkval ?? -1,
-                          icon: MdiIcons.cardsDiamond)
+                          value: card.scale ?? -1, icon: MdiIcons.cardsDiamond)
                     ],
                   )
                 ],
@@ -174,6 +222,24 @@ class _CardStats extends StatelessWidget {
           width: 5,
         ),
       ],
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  final IconData icono;
+  final VoidCallback? onPressed;
+  final Color color;
+  const CustomButton(
+      {super.key, required this.icono, this.onPressed, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      heroTag: null,
+      onPressed: onPressed,
+      backgroundColor: color,
+      child: Icon(icono),
     );
   }
 }

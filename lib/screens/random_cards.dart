@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yugioh_api_flutter/colors/colors.dart';
 import 'package:yugioh_api_flutter/models/card.dart';
 import 'package:yugioh_api_flutter/providers/card_provider.dart';
 import 'package:yugioh_api_flutter/widgets/widgets.dart';
@@ -53,6 +54,10 @@ class _RandomCardsState extends State<RandomCards> {
     List<CardType> cardo =
         Provider.of<CardProvider>(context).getRandomCardList();
     return Scaffold(
+      appBar: AppBar(
+        title: Text('All cards'),
+        backgroundColor: AppColors.secondaryColor,
+      ),
       body: RefreshIndicator(
         onRefresh: refresh,
         child: ListView.builder(

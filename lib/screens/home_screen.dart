@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yugioh_api_flutter/colors/colors.dart';
 
 import 'package:yugioh_api_flutter/screens/random_cards.dart';
 import 'package:yugioh_api_flutter/screens/screens.dart';
@@ -24,7 +25,7 @@ class _BottomCardNavigationState extends State<BottomCardNavigation> {
   static final List<Widget> _widgetOptions = <Widget>[
     const RandomCards(),
     SearchScreen(),
-    const RandomCards(),
+    CheckAuthScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -34,11 +35,16 @@ class _BottomCardNavigationState extends State<BottomCardNavigation> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (ModalRoute.of(context)?.settings.arguments != null) {
+      _onItemTapped(ModalRoute.of(context)?.settings.arguments as int);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('YU-GI-OH'),
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -59,7 +65,9 @@ class _BottomCardNavigationState extends State<BottomCardNavigation> {
         ],
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.cyan,
+        backgroundColor: AppColors.blue, // <-- This works for fixed
+        selectedItemColor: AppColors.tertiaryColor,
+        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
     );

@@ -75,7 +75,7 @@ class __LoginFormState extends State<_LoginForm> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Ingrese a su\nCuenta',
+                  'Sign in to your\nAccount',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: AppColors.grey,
                         fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class __LoginFormState extends State<_LoginForm> {
                   height: 6,
                 ),
                 Text(
-                  'Ingrese a su cuenta',
+                  'Sign in to your Account',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.grey,
                         fontWeight: FontWeight.bold,
@@ -107,24 +107,24 @@ class __LoginFormState extends State<_LoginForm> {
                   onChanged: (value) => loginForm.email = value,
                   validator: (value) {
                     return value!.isEmpty
-                        ? 'Por favor ingrese su Email'
+                        ? 'Please, Enter Email Address'
                         : _LoginForm.emailRegex.hasMatch(value)
                             ? null
-                            : 'Email invalido';
+                            : 'Invalid Email Address';
                   },
                   controller: emailController,
                 ),
                 AppTextFormField(
-                  labelText: 'Contraseña',
+                  labelText: 'Password',
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,
                   onChanged: (value) => loginForm.password = value,
                   validator: (value) {
                     return value!.isEmpty
-                        ? 'Por favor ingrese su contraseña'
+                        ? 'Please, Enter Password'
                         : _LoginForm.passwordRegex.hasMatch(value)
                             ? null
-                            : 'Contraseña invalida';
+                            : 'Invalid Password';
                   },
                   controller: passwordController,
                   obscureText: isObscure,
@@ -150,17 +150,6 @@ class __LoginFormState extends State<_LoginForm> {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  style: Theme.of(context).textButtonTheme.style,
-                  child: Text(
-                    '¿Olvidó su contraseña?',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
                 const SizedBox(
                   height: 15,
                 ),
@@ -183,7 +172,7 @@ class __LoginFormState extends State<_LoginForm> {
                           if (errorMessage == null) {
                             emailController.clear();
                             passwordController.clear();
-                            Navigator.pushReplacementNamed(context, '/home');
+                            Navigator.popAndPushNamed(context, '/home');
                           } else {
                             // TODO: mostrar error en pantalla
                             NotificationsService.showSnackbar(errorMessage);
@@ -194,7 +183,7 @@ class __LoginFormState extends State<_LoginForm> {
                     backgroundColor: MaterialStateProperty.all(null),
                   ),
                   child: Text(
-                    loginForm.isLoading ? 'Espere' : 'Login',
+                    loginForm.isLoading ? 'Loading' : 'Login',
                   ),
                 ),
                 const SizedBox(
@@ -212,17 +201,17 @@ class __LoginFormState extends State<_LoginForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "¿No tiene una cuenta?",
+                  "Don't have an account?",
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
                       ?.copyWith(color: Colors.black),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.pushNamed(context, '/registrar'),
+                  onPressed: () => Navigator.pushNamed(context, '/register'),
                   style: Theme.of(context).textButtonTheme.style,
                   child: Text(
-                    'Registrar',
+                    'Register',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.bold,

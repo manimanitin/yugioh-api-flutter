@@ -5,14 +5,15 @@ class NotificationsService {
       new GlobalKey<ScaffoldMessengerState>();
 
   static showSnackbar(String message) {
-    final snackBar = new SnackBar(
+    final snackBar = SnackBar(
       content: Text(
         message,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 20,
         ),
       ),
+      duration: Duration(milliseconds: 500),
     );
     messengerKey.currentState!.showSnackBar(snackBar);
   }
