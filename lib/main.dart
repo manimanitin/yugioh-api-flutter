@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yugioh_api_flutter/providers/card_provider.dart';
+import 'package:yugioh_api_flutter/providers/deck_provider.dart';
 import 'package:yugioh_api_flutter/screens/card_details_screen.dart';
 import 'package:yugioh_api_flutter/screens/random_cards.dart';
 import 'package:yugioh_api_flutter/services/auth_service.dart';
@@ -44,6 +45,7 @@ class AppState extends StatelessWidget {
           lazy: false,
         ),
         ChangeNotifierProvider(create: (_) => AuthService()),
+        ChangeNotifierProvider(create: (_) => DeckProvider()),
       ],
       child: const MainApp(),
     );

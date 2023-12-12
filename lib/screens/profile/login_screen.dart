@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yugioh_api_flutter/providers/deck_provider.dart';
 import 'package:yugioh_api_flutter/providers/login_form_provider.dart';
 import 'package:yugioh_api_flutter/services/auth_service.dart';
 import 'package:yugioh_api_flutter/services/notification_service.dart';
@@ -41,7 +42,6 @@ class _LoginForm extends StatefulWidget {
 }
 
 class __LoginFormState extends State<_LoginForm> {
-  final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -51,6 +51,7 @@ class __LoginFormState extends State<_LoginForm> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final loginForm = Provider.of<LoginFormProvider>(context);
+    final deckProvider = Provider.of<DeckProvider>(context);
 
     return Form(
       key: loginForm.formKey,
@@ -172,6 +173,7 @@ class __LoginFormState extends State<_LoginForm> {
                           if (errorMessage == null) {
                             emailController.clear();
                             passwordController.clear();
+                            deckProvider.getDecks();
                             Navigator.popAndPushNamed(context, '/home');
                           } else {
                             // TODO: mostrar error en pantalla

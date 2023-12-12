@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:yugioh_api_flutter/providers/deck_provider.dart';
 
 class AuthService extends ChangeNotifier {
   final String _baseUrl = 'loginbackend.somee.com';
@@ -30,6 +31,7 @@ class AuthService extends ChangeNotifier {
       final Map<String, dynamic> decodedResp = json.decode(resp.body);
 
       // Token hay que guardarlo en un lugar seguro
+      await storage.write(key: 'userId', value: authData["email"]);
       await storage.write(key: 'token', value: decodedResp['token']);
       // decodedResp['idToken'];
       return null;
@@ -71,6 +73,8 @@ class AuthService extends ChangeNotifier {
       final Map<String, dynamic> decodedResp = json.decode(resp.body);
 
       // Token hay que guardarlo en un lugar seguro
+      await storage.write(key: 'userId', value: authData["email"]);
+
       await storage.write(key: 'token', value: decodedResp['token']);
       // decodedResp['idToken'];
       return null;
@@ -83,10 +87,15 @@ class AuthService extends ChangeNotifier {
 
   Future logout() async {
     await storage.delete(key: 'token');
+    await storage.delete(key: 'userId');
     return;
   }
 
   Future<String> readToken() async {
     return await storage.read(key: 'token') ?? '';
+  }
+
+  readUserId() {
+    return storage.read(key: 'userId');
   }
 }

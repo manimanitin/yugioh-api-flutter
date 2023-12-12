@@ -1,10 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:yugioh_api_flutter/colors/colors.dart';
 import 'package:yugioh_api_flutter/models/card.dart';
 import 'package:yugioh_api_flutter/providers/card_provider.dart';
+import 'package:yugioh_api_flutter/providers/deck_provider.dart';
+import 'package:yugioh_api_flutter/services/auth_service.dart';
 import 'package:yugioh_api_flutter/services/notification_service.dart';
 import 'package:yugioh_api_flutter/widgets/card_image.dart';
 
@@ -15,7 +16,8 @@ class CardDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final CardType card =
         ModalRoute.of(context)?.settings.arguments as CardType;
-    final cardProvider = Provider.of<CardProvider>(context);
+    final deckProvider = Provider.of<DeckProvider>(context);
+    final authService = Provider.of<AuthService>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -25,12 +27,54 @@ class CardDetails extends StatelessWidget {
       body: CardScrollView(
         card: card,
       ),
-      floatingActionButton: Column(
+      floatingActionButton: FutureBuilder(
+        future: authService.readToken(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (!snapshot.hasData) return const SizedBox.shrink();
+
+          if (snapshot.data == '') {
+            return const SizedBox.shrink();
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CustomButton(
+                  onPressed: () {
+                    String message = deckProvider.addToDeck(card);
+                    NotificationsService.showSnackbar(message);
+                  },
+                  icono: Icons.add,
+                  color: AppColors.buttonGreenColor,
+                ),
+                const SizedBox(height: 10),
+                CustomButton(
+                  onPressed: () {
+                    String message = deckProvider.deleteFromDeck(card);
+                    NotificationsService.showSnackbar(message);
+                  },
+                  icono: Icons.remove,
+                  color: AppColors.accentColor,
+                ),
+                const SizedBox(height: 10),
+                CustomButton(
+                  icono: Icons.refresh,
+                  onPressed: () {
+                    String message = deckProvider.resetFromDeck(card);
+                    NotificationsService.showSnackbar(message);
+                  },
+                  color: AppColors.lightBlue,
+                )
+              ],
+            );
+          }
+        },
+      ),
+      /* Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           CustomButton(
             onPressed: () {
-              String message = cardProvider.addToDeck(card);
+              String message = deckProvider.addToDeck(card);
               NotificationsService.showSnackbar(message);
             },
             icono: Icons.add,
@@ -39,7 +83,7 @@ class CardDetails extends StatelessWidget {
           const SizedBox(height: 10),
           CustomButton(
             onPressed: () {
-              String message = cardProvider.deleteFromDeck(card);
+              String message = deckProvider.deleteFromDeck(card);
               NotificationsService.showSnackbar(message);
             },
             icono: Icons.remove,
@@ -49,13 +93,13 @@ class CardDetails extends StatelessWidget {
           CustomButton(
             icono: Icons.refresh,
             onPressed: () {
-              String message = cardProvider.resetFromDeck(card);
+              String message = deckProvider.resetFromDeck(card);
               NotificationsService.showSnackbar(message);
             },
             color: AppColors.lightBlue,
           )
         ],
-      ),
+      ),*/
     );
   }
 }

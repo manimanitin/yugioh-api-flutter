@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:yugioh_api_flutter/models/card.dart';
 import 'package:yugioh_api_flutter/providers/card_provider.dart';
+import 'package:yugioh_api_flutter/providers/deck_provider.dart';
 import 'package:yugioh_api_flutter/widgets/card_image.dart';
 
 class DeckScreen extends StatefulWidget {
@@ -16,8 +16,10 @@ class _DeckScreenState extends State<DeckScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final deck = Provider.of<CardProvider>(context).countDeckCards;
-    final extraDeck = Provider.of<CardProvider>(context).countExtraDeckCards;
+    final deck = Provider.of<DeckProvider>(context).countDeckCards;
+    final extraDeck = Provider.of<DeckProvider>(context).countExtraDeckCards;
+    final deckCount = Provider.of<DeckProvider>(context).deckCards;
+    final extraDeckCount = Provider.of<DeckProvider>(context).extraDeckCards;
 
     return Column(
       children: [
@@ -36,21 +38,30 @@ class _DeckScreenState extends State<DeckScreen> {
         ),
         Expanded(
           child: ListView.builder(
-              controller: controller,
+              controller: ScrollController(),
               itemCount: deck.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 final card = deck.entries.elementAt(index);
+                final cardlec =
+                    deckCount.firstWhere((element) => card.key == element.id);
                 return ListTile(
-                  leading: CardImageContainer(card: card.key),
-                  title: Text(card.key.name),
+                  leading: CardImageContainer(card: cardlec),
+                  title: Text(cardlec.name),
                   subtitle: Text("${card.value} copies"),
                   onTap: () {
                     Navigator.pushNamed(context, '/details',
-                        arguments: card.key);
+                        arguments: cardlec);
                   },
                 );
               }),
+        ),
+        Text(
+          "Total cards in deck: ${deckCount.length}",
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(
           height: 10,
@@ -72,17 +83,29 @@ class _DeckScreenState extends State<DeckScreen> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 final card = extraDeck.entries.elementAt(index);
+                final cardlec = extraDeckCount
+                    .firstWhere((element) => card.key == element.id);
                 return ListTile(
-                  leading: CardImageContainer(card: card.key),
-                  title: Text(card.key.name),
+                  leading: CardImageContainer(card: cardlec),
+                  title: Text(cardlec.name),
                   subtitle: Text("${card.value} copies"),
                   onTap: () {
                     Navigator.pushNamed(context, '/details',
-                        arguments: card.key);
+                        arguments: cardlec);
                   },
                 );
               }),
         ),
+        Text(
+          "Total cards in Extra Deck: ${extraDeckCount.length}",
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        )
       ],
     );
   }
