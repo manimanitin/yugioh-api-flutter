@@ -23,9 +23,6 @@ class AuthService extends ChangeNotifier {
     final resp = await http.post(url,
         headers: {"Content-Type": "application/json"},
         body: json.encode(authData));
-    print(json.decode(resp.body));
-
-    print(json.decode(resp.body).runtimeType);
 
     if ((resp.statusCode ~/ 100) == 2) {
       final Map<String, dynamic> decodedResp = json.decode(resp.body);
@@ -37,7 +34,6 @@ class AuthService extends ChangeNotifier {
       return null;
     } else {
       final Map<String, dynamic> decodedResp = json.decode(resp.body)[0];
-      print(decodedResp);
       return decodedResp['description'];
     }
   }
@@ -59,9 +55,7 @@ class AuthService extends ChangeNotifier {
     final resp = await http.post(url,
         headers: {"Content-Type": "application/json"},
         body: json.encode(authData));
-    print(resp.body);
 
-    print(resp.body.runtimeType);
     /*final resp = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

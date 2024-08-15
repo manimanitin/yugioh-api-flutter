@@ -41,7 +41,7 @@ class CardProvider extends ChangeNotifier {
         notifyListeners();
       }
     } on Exception catch (e) {
-      print(e);
+      (e);
     }
   }
 
@@ -61,7 +61,7 @@ class CardProvider extends ChangeNotifier {
         }
         notifyListeners();
       } on Exception catch (e) {
-        print(e);
+        (e);
       }
     }
   }
@@ -77,13 +77,13 @@ class CardProvider extends ChangeNotifier {
   emptySearchList() {
     searchCardList.clear();
     notifyListeners();
-    print("se elimino");
+    ("se elimino");
   }
 
   addSearchList(String? fname) async {
     final dio = Dio(options);
     emptySearchList();
-    print(searchCardList.length);
+    (searchCardList.length);
     try {
       final response = await dio
           .get("https://db.ygoprodeck.com/api/v7/cardinfo.php?&fname=$fname");
@@ -91,17 +91,17 @@ class CardProvider extends ChangeNotifier {
         if (element["atk"] != null) {
           final monsterCard = CardType.monsterFromJson(element);
           searchCardList.add(monsterCard);
-          print(monsterCard.name);
+          (monsterCard.name);
         } else {
           final monsterCard = CardType.spellTrapFromJson(element);
           searchCardList.add(monsterCard);
-          print(monsterCard.name);
+          (monsterCard.name);
         }
 
         notifyListeners();
       }
     } on Exception catch (e) {
-      print(e);
+      (e);
     }
   }
 }

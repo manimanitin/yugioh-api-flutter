@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new
+
 import 'package:flutter/material.dart';
 
 class NotificationsService {
@@ -13,7 +15,7 @@ class NotificationsService {
           fontSize: 20,
         ),
       ),
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
     messengerKey.currentState!.showSnackBar(snackBar);
   }

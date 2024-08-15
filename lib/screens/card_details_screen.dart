@@ -147,7 +147,6 @@ class _ImageAndName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(card.extraDeck);
     return Column(
       children: [
         Row(

@@ -58,7 +58,7 @@ class _DeckScreenState extends State<DeckScreen> {
         ),
         Text(
           "Total cards in deck: ${deckCount.length}",
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
@@ -98,7 +98,7 @@ class _DeckScreenState extends State<DeckScreen> {
         ),
         Text(
           "Total cards in Extra Deck: ${extraDeckCount.length}",
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
           ),

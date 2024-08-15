@@ -33,9 +33,7 @@ class DeckProvider extends ChangeNotifier {
             "deckList": [],
             "extraDeckList": [],
           });
-    } on Exception catch (e) {
-      print(e);
-    }
+    } on Exception catch (e) {}
     notifyListeners();
   }
 
@@ -65,9 +63,7 @@ class DeckProvider extends ChangeNotifier {
       } else {
         return "Error saving deck";
       }
-    } on Exception catch (e) {
-      print(e);
-    }
+    } on Exception catch (e) {}
 
     notifyListeners();
   }
@@ -92,11 +88,7 @@ class DeckProvider extends ChangeNotifier {
 
       populateDecks(
           response.data[0]["deckList"], response.data[0]["extraDeckList"]);
-    } on Exception catch (e) {
-      print(e);
-    }
-    print(countDeckCards.values);
-    print(deckCards.length);
+    } on Exception catch (e) {}
   }
 
   populateDecks(decklist, extraDeckList) async {
@@ -117,9 +109,7 @@ class DeckProvider extends ChangeNotifier {
               CardType.spellTrapFromJson(response.data["data"][0]);
           deck.add(monsterCard);
         }
-      } on Exception catch (e) {
-        print(e);
-      }
+      } on Exception catch (e) {}
     }
     for (var element in extraDeckList) {
       try {
@@ -134,17 +124,13 @@ class DeckProvider extends ChangeNotifier {
               CardType.spellTrapFromJson(response.data["data"][0]);
           extraDeck.add(monsterCard);
         }
-      } on Exception catch (e) {
-        print(e);
-      }
+      } on Exception catch (e) {}
     }
     for (var element in deck) {
-      print(element.id);
       addToDeck(element);
       notifyListeners();
     }
     for (var element in extraDeck) {
-      print(element.id);
       addToDeck(element);
       notifyListeners();
     }
@@ -219,7 +205,6 @@ class DeckProvider extends ChangeNotifier {
         if (countExtraDeckCards[card.id]! > 1) {
           countExtraDeckCards[card.id] = countExtraDeckCards[card.id]! - 1;
           extraDeckCards.remove(card);
-          print("ok");
           message = "Deleted 1 ${card.name} from Extra Deck";
         } else {
           countExtraDeckCards.remove(card.id);
@@ -244,7 +229,6 @@ class DeckProvider extends ChangeNotifier {
         if (countDeckCards[card.id]! > 1) {
           countDeckCards[card.id] = countDeckCards[card.id]! - 1;
           deckCards.remove(card);
-          print("ok");
           message = "Deleted 1 ${card.name} from Deck";
         } else {
           deckCards.remove(card);
@@ -287,7 +271,6 @@ class DeckProvider extends ChangeNotifier {
         }
       }
     }
-    print(message);
     notifyListeners();
     return message;
   }
@@ -318,7 +301,6 @@ class DeckProvider extends ChangeNotifier {
         }
       }
     }
-    print(message);
 
     notifyListeners();
 
