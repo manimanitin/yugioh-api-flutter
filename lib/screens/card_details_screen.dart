@@ -21,7 +21,10 @@ class CardDetails extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Card Details"),
+        title: const Text(
+          "Card Details",
+          style: const TextStyle(color: Colors.white),
+        ),
         backgroundColor: AppColors.secondaryColor,
       ),
       body: CardScrollView(

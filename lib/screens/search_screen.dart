@@ -22,7 +22,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    streamController.stream.debounce(Duration(seconds: 2)).listen((s) {
+    streamController.stream.debounce(const Duration(seconds: 2)).listen((s) {
       if (s.length > 4) {
         setState(() {
           Provider.of<CardProvider>(context, listen: false).addSearchList(s);
@@ -38,7 +38,10 @@ class _SearchScreenState extends State<SearchScreen> {
     List<CardType> cardo = Provider.of<CardProvider>(context).getSearchList();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search a card'),
+        title: const Text(
+          'Search a card',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: AppColors.secondaryColor,
       ),
       body: Padding(
@@ -62,9 +65,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     streamController.add(value);
                   });
                 }),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             _searchQuery.isEmpty
-                ? Text('Enter a search query')
+                ? const Text('Enter a search query')
                 : cardo.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(

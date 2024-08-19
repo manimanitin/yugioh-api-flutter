@@ -54,7 +54,10 @@ class _RandomCardsState extends State<RandomCards> {
         Provider.of<CardProvider>(context).getRandomCardList();
     return Scaffold(
       appBar: AppBar(
-        title: Text('All cards'),
+        title: const Text(
+          'All cards',
+          style: const TextStyle(color: Colors.white),
+        ),
         backgroundColor: AppColors.secondaryColor,
       ),
       body: RefreshIndicator(
